@@ -24,7 +24,8 @@ export const getGuessWordFromChatGPT = async (correctChars, presentChars, exclud
     }, {
         headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${process.env.REACT_APP_OPENAI_KEY}`
+            // Authorization: `Bearer ${process.env.REACT_APP_OPENAI_KEY}`
+            Authorization: `Bearer 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`
         }
     });
     const word = response.data.choices[0].message.content;
