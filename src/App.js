@@ -13,7 +13,16 @@ function App() {
     const wordRegex = /^[a-zA-Z]{5}$/;
     const timer = ms => new Promise((res) => setTimeout(res, ms));
 
+    const resetGame = () => {
+        setWords([]);
+        setGuessing(false);
+        setMessage('');
+        correctCharsRef.current = new Array(5).fill('');
+        presentCharsRef.current = [];
+    }
+
     async function startGussWord() {
+        resetGame();
         setGuessing(true);
         let guessWord = "start";
         const excludedWords = [guessWord];
@@ -25,6 +34,7 @@ function App() {
                 } = await getGuessResult(guessWord, correctCharsRef.current, presentCharsRef.current);
                 correctCharsRef.current = correctChars;
                 presentCharsRef.current = presentChars;
+                await timer(2000);
 
                 if (!correctChars.includes('')) {
                     setGuessing(false);
@@ -42,7 +52,7 @@ function App() {
                     excludedWords.push(guessWord);
                 }
             }
-            await timer(3000);
+
         }
     }
 
