@@ -28,7 +28,6 @@ This is assignment for Backend position but I think it would be better if we hav
 
 ### Description
 * Developing auto guessing wordle game using ChatGPT
-* A personal project for applying at Votee AI
 * Using prompt engineering to get the guessed words form OpenAI api and show them in the game. The current word return based on previous word characters.
 
 ![prompt](public/image/prompt-engineering.png)
