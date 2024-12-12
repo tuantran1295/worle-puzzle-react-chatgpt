@@ -3,6 +3,7 @@ import './App.css';
 import {useEffect, useRef, useState} from "react";
 import {getGuessWordFromChatGPT} from "./service/chatgpt";
 import {getGuessResult} from "./service/wordle";
+import CryptoJS from "crypto-js";
 
 function App() {
     const [wordList, setWords] = useState([]);
@@ -10,8 +11,26 @@ function App() {
     const [message, setMessage] = useState('');
     const correctCharsRef = useRef(new Array(5).fill(''));
     const presentCharsRef = useRef([]);
+    const apiKeyRef = useRef('');
     const wordRegex = /^[a-zA-Z]{5}$/;
     const timer = ms => new Promise((res) => setTimeout(res, ms));
+
+    useEffect(() => {
+        // function encryptOpenAIKey() {
+        //     const encryptText = (plainTextKey) => {
+        //         return CryptoJS.AES.encrypt(plainTextKey, 'apiKey.123').toString();
+        //     };
+        //     console.log(encryptText(""));
+        //     debugger;
+        // }
+        // encryptOpenAIKey();
+
+        function decryptOpenAIKey() {
+            const bytes = CryptoJS.AES.decrypt(process.env.REACT_APP_ENCRYPTED_OPENAI_KEY, process.env.REACT_APP_DECRYPT_KEY);
+            return bytes.toString(CryptoJS.enc.Utf8);
+        }
+        apiKeyRef.current = decryptOpenAIKey();
+    },[])
 
     const resetGame = () => {
         setWords([]);
@@ -45,7 +64,7 @@ function App() {
                 }
             }
 
-            guessWord = await getGuessWordFromChatGPT(correctCharsRef.current, presentCharsRef.current, excludedWords);
+            guessWord = await getGuessWordFromChatGPT(correctCharsRef.current, presentCharsRef.current, excludedWords, apiKeyRef.current);
             if (wordRegex.test(guessWord)) {
                 setWords(prevState => [...prevState, guessWord].slice(-5));
                 if (!excludedWords.includes(guessWord)) {

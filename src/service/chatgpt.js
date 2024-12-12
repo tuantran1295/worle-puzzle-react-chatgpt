@@ -1,6 +1,6 @@
 import axios from "axios";
 
-export const getGuessWordFromChatGPT = async (correctChars, presentChars, excludedWords) => {
+export const getGuessWordFromChatGPT = async (correctChars, presentChars, excludedWords, apiKey) => {
     let prompt = "We are playing a Wordle-style game. Guess the 5-letter word. Display the word only. ";
     if (correctChars[0]) prompt += ` start with ${correctChars[0]}`;
     if (correctChars[1]) prompt += `, second letter is ${correctChars[1]}`;
@@ -25,7 +25,7 @@ export const getGuessWordFromChatGPT = async (correctChars, presentChars, exclud
         headers: {
             "Content-Type": "application/json",
             // Authorization: `Bearer ${process.env.REACT_APP_OPENAI_KEY}`
-            Authorization: `Bearer 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`
+            Authorization: `Bearer ${apiKey}`
         }
     });
     const word = response.data.choices[0].message.content;
